@@ -10,27 +10,47 @@ import UIKit
 
 class IngredientViewController: UIViewController {
 
+    @IBOutlet weak var ingredientCollectionView : UICollectionView!
+    
+//    var ingredientData =
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        ingredientCollectionView.register( UINib(nibName: "IngredientCollectionViewCell", bundle: Bundle.main), forCellWithReuseIdentifier: "cell")
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
 
+extension ViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 10
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as!IngredientCollectionViewCell
+        
+//        cell.imageView.image = nil
+//        cell.photoData = photos[indexPath.row]
+        return cell
+    }
+}
+
+extension ViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        if let imageVC = storyboard?.instantiateViewController(withIdentifier: "ingredientViewController") as? IngredientViewController {
+//            
+//            imageVC.imageLabel = photos[indexPath.row].title
+//            imageVC.photoData = photos[indexPath.row]
+//            //imageVC.imageViewer.image = nil
+//            navigationController?.pushViewController(imageVC, animated: true)
+//        }
+    }
+}

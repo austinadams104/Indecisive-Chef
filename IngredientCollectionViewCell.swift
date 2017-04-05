@@ -11,6 +11,7 @@ import UIKit
 class IngredientCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var ingredientName: UILabel!
+    @IBOutlet weak var quantity: UITextField!
     
     @IBAction func changeIngredientAmount(_ sender: Any) {
         

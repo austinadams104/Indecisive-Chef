@@ -11,12 +11,16 @@ import UIKit
 class RecipeViewController: UIViewController {
 
     @IBOutlet weak var recipeImage: UIImageView!
-    @IBOutlet weak var intructions: UITextView!
+    @IBOutlet weak var instructionTextView: UITextView!
+    @IBOutlet weak var ingredientTextView: UITextView!
     
+    var instructionText = ""
+    var ingredientText = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        instructionTextView.text = instructionText
+        ingredientTextView.text = ingredientText
         // Do any additional setup after loading the view.
     }
 

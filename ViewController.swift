@@ -13,36 +13,43 @@ class ViewController: UIViewController {
     @IBOutlet weak var searchRecipes: UISearchBar!
     @IBOutlet weak var RecipeTableView: UITableView!
     
-    var recipes = [Recipe]()
-    
+    var tableData = [Recipe]()
+    var recipeInstructionData = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        tableData = Recipe.ingredients
     }
 
+    @IBAction func unwindToMainManu(_ sender: UIStoryboardSegue){
+        if sender.identifier == "saveSegue",
+            let addRecipeVC = sender.source as? NewRecipeViewController,
+            let newRecipeName = addRecipeVC.recipeNameField.text,
+            let newRecipeInstruction = addRecipeVC.recipeInstructionField.text,
+            let newCookTime = addRecipeVC.cookTime.text {
+                tableData.append(Recipe(name: newRecipeName, ingredients: [], instructions: newRecipeInstruction, time: Int(newCookTime)!))
+            RecipeTableView .reloadData()
+        }
+        
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
 }
 
 extension ViewController: UITableViewDataSource {
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return recipes.count
+        return tableData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
-        cell.textLabel?.text = recipes[indexPath.row].name
+        cell.textLabel?.text = tableData[indexPath.row].name
         return cell
         
     }
@@ -51,17 +58,18 @@ extension ViewController: UITableViewDataSource {
 extension ViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let recipeVC = storyboard?.instantiateViewController(withIdentifier: "recipeViewController"){
-            
+        if let recipeVC = storyboard?.instantiateViewController(withIdentifier: "recipeViewController") as? RecipeViewController {
+            recipeVC.title = tableData[indexPath.row].name
+            var ingredientString = ""
+            for index in 0..<tableData[indexPath.row].ingredients.count {
+                ingredientString += "\(tableData[indexPath.row].ingredients[index])\n"
+            }
+            recipeVC.ingredientText = ingredientString
+            recipeVC.instructionText = tableData[indexPath.row].instructions
+            navigationController?.pushViewController(recipeVC, animated: true)
         }
+        
+
     }
-    
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        if let noteVC = storyboard?.instantiateViewController(withIdentifier: "noteViewController") as? NoteViewController {
-//            noteVC.title = tableData[indexPath.row]
-//            noteVC.messageText = messageData[indexPath.row]
-//            navigationController?.pushViewController(noteVC, animated: true)
-//        }
-//    }
 }
 
