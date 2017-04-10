@@ -10,39 +10,53 @@ import UIKit
 
 class IngredientViewController: UIViewController {
 
+    var recipeData = Recipe.ingredients
+    var totalIngredients = [String]()
+   // var unique = Array(Set(recipeData))
+    
     @IBOutlet weak var ingredientCollectionView : UICollectionView!
     
-//    var ingredientData =
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        var allIngredients = [String]()
+        
+        for recipe in recipeData {
+            for ingredient in recipe.ingredients {
+                if (!allIngredients.contains(ingredient.lowercased())) {
+                    allIngredients.append(ingredient.lowercased())
+                }
+                
+            }
+        }
+        
+        DispatchQueue.main.async {
+            self.totalIngredients = allIngredients
+            self.ingredientCollectionView.reloadData()
+        }
+        
         ingredientCollectionView.register( UINib(nibName: "IngredientCollectionViewCell", bundle: Bundle.main), forCellWithReuseIdentifier: "cell")
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
 }
 
-extension ViewController: UICollectionViewDataSource {
+extension IngredientViewController: UICollectionViewDataSource {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return totalIngredients.count
         
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as!IngredientCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! IngredientCollectionViewCell
         
-//        cell.imageView.image = nil
-//        cell.photoData = photos[indexPath.row]
+        cell.ingredientName.text = totalIngredients[indexPath.row].capitalized
+        cell.quantity.text = "1"
         return cell
     }
 }
 
-extension ViewController: UICollectionViewDelegate {
+extension IngredientViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        if let imageVC = storyboard?.instantiateViewController(withIdentifier: "ingredientViewController") as? IngredientViewController {

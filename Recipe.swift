@@ -10,7 +10,7 @@ import UIKit
 class Recipe {
     
     static var ingredients = [
-        Recipe(name: "Lasagna", ingredients: [" pasta", "cheese", "sauce"], instructions: "Cook it", time: 55),
+        Recipe(name: "Lasagna", ingredients: ["Pasta", "cheese", "sauce"], instructions: "Cook it", time: 55),
         Recipe(name: "Pizza", ingredients: ["Crust", "cheese", "sauce", "pepperoni"], instructions: "Cook it", time: 20),
         Recipe(name: "Frozen Burrito", ingredients: ["Frozen Burrito"], instructions: "Cook it",time: 5),
         Recipe(name: "JDogs", ingredients: ["Polish Dog", "Bun", "Jdog sauce"], instructions: "Cook it",time: 15),
@@ -35,3 +35,16 @@ class Recipe {
     }
     
 }
+
+//var name:String
+//var instructions: String
+//var time: Int
+//var ingredients: [(amount: Int, measurement: String, name: String)]
+//
+//
+//init(name: String, ingredients: [(Int, String, String)], instructions: String, time: Int) {
+//    self.name = name
+//    self.time = time
+//    self.ingredients = ingredients
+//    self.instructions = instructions
+//}
