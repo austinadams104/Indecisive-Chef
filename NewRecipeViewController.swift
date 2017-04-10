@@ -26,24 +26,36 @@ class NewRecipeViewController: UIViewController {
         recipeIngredientField.layer.borderColor = UIColor.gray.withAlphaComponent(0.5).cgColor
         recipeIngredientField.layer.borderWidth = 0.5
         recipeIngredientField.clipsToBounds = true
-
-        // Do any additional setup after loading the view.
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
+
+//IDEA! delete ingredient field, add horizontal stack view with text fields and picker views to take ingredient data that will fill easier than one big textview.
+//learn to set placeholder text inside instructions text view
+
+
+//pickerView settings
+//pint quart fl oz oz
+//var pickerData = ["cup", "cups", "oz", "fl oz", "tsp","Tbsp","lb", "lbs", "pint", "pints", "quart", "quarts", "package", "packages", "can", "cans", "bottle", "bottles", ""]
+
+//extension IngredientCollectionViewCell: UIPickerViewDelegate {
+//
+//    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+//        return pickerData.count
+//    }
+//
+//    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+//        return 1
+//    }
+//
+//    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+//        return pickerData[row]
+//    }
+//
+//    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+//        return 25
+//    }
+//}
+//
+//extension IngredientCollectionViewCell: UIPickerViewDataSource {
+//
+//}

@@ -26,9 +26,10 @@ class ViewController: UIViewController {
         if sender.identifier == "saveSegue",
             let addRecipeVC = sender.source as? NewRecipeViewController,
             let newRecipeName = addRecipeVC.recipeNameField.text,
+            let newRecipeIngredients = addRecipeVC.recipeIngredientField.text,
             let newRecipeInstruction = addRecipeVC.recipeInstructionField.text,
             let newCookTime = addRecipeVC.cookTime.text {
-                tableData.append(Recipe(name: newRecipeName, ingredients: [], instructions: newRecipeInstruction, time: Int(newCookTime)!))
+            tableData.append(Recipe(name: newRecipeName, ingredients: [], instructions: newRecipeInstruction, time: Int(newCookTime)!))//need to track ingredients still
             RecipeTableView .reloadData()
         }
         
@@ -62,7 +63,7 @@ extension ViewController: UITableViewDelegate {
             recipeVC.title = tableData[indexPath.row].name
             var ingredientString = ""
             for index in 0..<tableData[indexPath.row].ingredients.count {
-                ingredientString += "\(tableData[indexPath.row].ingredients[index])\n"
+                ingredientString += "\(tableData[indexPath.row].ingredients[index].amount) \(tableData[indexPath.row].ingredients[index].measurement) \(tableData[indexPath.row].ingredients[index].name)\n"
             }
             recipeVC.ingredientText = ingredientString
             recipeVC.instructionText = tableData[indexPath.row].instructions

@@ -12,6 +12,8 @@ class IngredientViewController: UIViewController {
 
     var recipeData = Recipe.ingredients
     var totalIngredients = [String]()
+    var measurements = [String]()
+    var totalQuantity = [Int]()
    // var unique = Array(Set(recipeData))
     
     @IBOutlet weak var ingredientCollectionView : UICollectionView!
@@ -21,18 +23,23 @@ class IngredientViewController: UIViewController {
         super.viewDidLoad()
         
         var allIngredients = [String]()
+        var units = [String]()
+        var amounts = [Int]()
         
         for recipe in recipeData {
             for ingredient in recipe.ingredients {
-                if (!allIngredients.contains(ingredient.lowercased())) {
-                    allIngredients.append(ingredient.lowercased())
+                if (!allIngredients.contains(ingredient.name.lowercased())) {
+                    allIngredients.append(ingredient.name.lowercased())
+                    units.append(ingredient.measurement)
+                    amounts.append(ingredient.amount) //need to error check for float values
                 }
-                
             }
         }
         
         DispatchQueue.main.async {
             self.totalIngredients = allIngredients
+            self.measurements = units
+            self.totalQuantity = amounts
             self.ingredientCollectionView.reloadData()
         }
         
@@ -51,7 +58,8 @@ extension IngredientViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! IngredientCollectionViewCell
         
         cell.ingredientName.text = totalIngredients[indexPath.row].capitalized
-        cell.quantity.text = "1"
+        cell.measurement.text = measurements[indexPath.row]
+        cell.quantity.text = String(totalQuantity[indexPath.row])
         return cell
     }
 }
@@ -59,12 +67,6 @@ extension IngredientViewController: UICollectionViewDataSource {
 extension IngredientViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        if let imageVC = storyboard?.instantiateViewController(withIdentifier: "ingredientViewController") as? IngredientViewController {
-//            
-//            imageVC.imageLabel = photos[indexPath.row].title
-//            imageVC.photoData = photos[indexPath.row]
-//            //imageVC.imageViewer.image = nil
-//            navigationController?.pushViewController(imageVC, animated: true)
-//        }
+
     }
 }
