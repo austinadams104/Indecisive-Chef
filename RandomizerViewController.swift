@@ -16,32 +16,17 @@ class RandomizerViewController: UIViewController {
 
     @IBOutlet weak var recipeNameLabel: UILabel!
 
-    var recipes = ["Lasagna", "Pizza", "Frozen Burritos", "JDogs", "Tacos", "BBQ Chicken", "Pulled Pork", "Steak"]
+    var recipes = [Recipes]()
     
     override func viewDidLoad() {
-        
+        recipes = Recipes.fetchAllRecipes(in: Store.sharedMainContext())
+        for r in recipes {
+            print (r)
+        }
         
         
     }
-//        var button:UIButton  = UIButton.buttonWithType(UIButtonType.System) as UIButton
-//        
-//        button.setTitle("Your title", forState: UIControlState.Normal)
-//        button.frame = CGRectMake(0, 0, 100, 44)
-//        
-//        self.view.addSubview(button as UIView)
-//        //set normal image
-//        button.setImage(normalImage, forState: UIControlState.Normal)
-//        //set highlighted image
-//        button.setImage(selectedImage, forState: UIControlState.Selected)
-//        
-//        button.addTarget(self, action: "buttonClicked:", forControlEvents: UIControlEvents.TouchUpInside)
-//        
-//    }
-//    
-//    func buttonClicked(sender:UIButton)
-//    {
-//        sender.selected = !sender.selected;
-//    }
+
     
     @IBAction func selectedButton(_ sender: UIButton) {
         if sender == quickBtn {
@@ -67,7 +52,7 @@ class RandomizerViewController: UIViewController {
     }
     
     @IBAction func pickMeal(_ sender: Any) {
-        recipeNameLabel.text = recipes[Int(arc4random()) % recipes.count]
+        recipeNameLabel.text = recipes[Int(arc4random()) % recipes.count].name
         
     }
 }

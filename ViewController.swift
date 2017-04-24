@@ -13,25 +13,31 @@ class ViewController: UIViewController {
     @IBOutlet weak var searchRecipes: UISearchBar!
     @IBOutlet weak var RecipeTableView: UITableView!
     
-    var tableData = [Recipe]()
+    var tableData = [Recipes]()
+    var collectionData = [Ingredients]()
     var recipeInstructionData = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        tableData = Recipe.ingredients
+        
+        tableData =  Recipes.fetchAllRecipes(in: Store.sharedMainContext())
+        collectionData = Ingredients.fetchAllIngredients(in: Store.sharedMainContext())
     }
 
     @IBAction func unwindToMainManu(_ sender: UIStoryboardSegue){
         if sender.identifier == "saveSegue",
             let addRecipeVC = sender.source as? NewRecipeViewController,
             let newRecipeName = addRecipeVC.recipeNameField.text,
-            let newRecipeIngredients = addRecipeVC.recipeIngredientField.text,
+            //let newIngredient = addRecipeVC.ingredientCollectionView.,
+            //let newRecipeIngredients = addRecipeVC.recipeIngredientField.text,
             let newRecipeInstruction = addRecipeVC.recipeInstructionField.text,
-            let newCookTime = addRecipeVC.cookTime.text {
-            tableData.append(Recipe(name: newRecipeName, ingredients: [], instructions: newRecipeInstruction, time: Int(newCookTime)!))//need to track ingredients still
-            RecipeTableView .reloadData()
+            let newCookTime = Int(addRecipeVC.cookTime.text!) {
+            
+            Recipes.save(newRecipe: Recipe(name: newRecipeName, ingredients: [], instructions: newRecipeInstruction, time: newCookTime), context: Store.sharedMainContext())
+            //this is wrong, collectionData won't hold one recipes ingredients...
         }
+        RecipeTableView.reloadData()
         
     }
     
@@ -66,11 +72,12 @@ extension ViewController: UITableViewDelegate {
                 ingredientString += "\(tableData[indexPath.row].ingredients[index].amount) \(tableData[indexPath.row].ingredients[index].measurement) \(tableData[indexPath.row].ingredients[index].name)\n"
             }
             recipeVC.ingredientText = ingredientString
-            recipeVC.instructionText = tableData[indexPath.row].instructions
+            recipeVC.instructionText = tableData[indexPath.row].directions!
             navigationController?.pushViewController(recipeVC, animated: true)
         }
         
 
     }
 }
+
 

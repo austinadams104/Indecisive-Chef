@@ -10,10 +10,10 @@ import UIKit
 
 class IngredientViewController: UIViewController {
 
-    var recipeData = Recipe.ingredients
+    var ingredientData = Ingredients.fetchAllIngredients(in: Store.sharedMainContext())
     var totalIngredients = [String]()
     var measurements = [String]()
-    var totalQuantity = [Int]()
+    var totalQuantity = [String]()
    // var unique = Array(Set(recipeData))
     
     @IBOutlet weak var ingredientCollectionView : UICollectionView!
@@ -24,15 +24,13 @@ class IngredientViewController: UIViewController {
         
         var allIngredients = [String]()
         var units = [String]()
-        var amounts = [Int]()
+        var amounts = [String]()
         
-        for recipe in recipeData {
-            for ingredient in recipe.ingredients {
-                if (!allIngredients.contains(ingredient.name.lowercased())) {
-                    allIngredients.append(ingredient.name.lowercased())
-                    units.append(ingredient.measurement)
-                    amounts.append(ingredient.amount) //need to error check for float values
-                }
+        for ingredient in ingredientData {
+            if (!allIngredients.contains((ingredient.name?.lowercased())!)) {
+                allIngredients.append((ingredient.name?.lowercased())!)
+                units.append(ingredient.measurement!)
+                amounts.append(ingredient.amount!) //need to error check for float values
             }
         }
         

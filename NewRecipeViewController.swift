@@ -12,9 +12,11 @@ class NewRecipeViewController: UIViewController {
     
     @IBOutlet weak var recipeNameField: UITextField!
     @IBOutlet weak var recipeInstructionField: UITextView!
-    @IBOutlet weak var recipeIngredientField: UITextView!
     @IBOutlet weak var cookTime: UITextField!
-
+    @IBOutlet weak var ingredientTableView: UITableView!
+    
+    var ingredients = [[Ingredients]]()
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         recipeInstructionField.layer.cornerRadius = 5
@@ -22,40 +24,98 @@ class NewRecipeViewController: UIViewController {
         recipeInstructionField.layer.borderWidth = 0.5
         recipeInstructionField.clipsToBounds = true
         
-        recipeIngredientField.layer.cornerRadius = 5
-        recipeIngredientField.layer.borderColor = UIColor.gray.withAlphaComponent(0.5).cgColor
-        recipeIngredientField.layer.borderWidth = 0.5
-        recipeIngredientField.clipsToBounds = true
+        DispatchQueue.main.async {
+            self.ingredientTableView.reloadData()
+        }
+    
+        ingredientTableView.register(UINib(nibName: "NewRecipeTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "recipeCell")
+        
+        ingredients.append([Ingredients()])
+        
+        for i in ingredients {
+            print(i)
+        }
     }
 }
 
-//IDEA! delete ingredient field, add horizontal stack view with text fields and picker views to take ingredient data that will fill easier than one big textview.
-//learn to set placeholder text inside instructions text view
+extension NewRecipeViewController: UpdateDataDelegate {
+    func updateIngredient(index: Int, ingredient: [Ingredients]) {
+        ingredients[index] = ingredient
+        ingredients.append(ingredient)
+        
+        ingredientTableView.reloadData()
+    }
+    
+    func deleteIngredient(atIndex index: Int) {
+        print(index)
+        print(ingredients[index])
+        print(ingredients)
+        ingredients.remove(at: index)
+        ingredientTableView.reloadData()
+        print(ingredients)
+        
+    }
+}
+
+extension NewRecipeViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return ingredients.count
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 120
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "recipeCell", for: indexPath) as! NewRecipeTableViewCell
+        
+        let ingredient = ingredients[indexPath.row]
+        cell.ingredient = ingredient
+        cell.index = indexPath.row
+        cell.update = self
+        
+        return cell
+    }
+}
+
+extension NewRecipeViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        return
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        return
+    }
+}
 
 
-//pickerView settings
-//pint quart fl oz oz
-//var pickerData = ["cup", "cups", "oz", "fl oz", "tsp","Tbsp","lb", "lbs", "pint", "pints", "quart", "quarts", "package", "packages", "can", "cans", "bottle", "bottles", ""]
+public protocol UpdateDataDelegate {
+    func updateIngredient(index: Int, ingredient: [Ingredients])
+    func deleteIngredient(atIndex: Int)
+}
 
-//extension IngredientCollectionViewCell: UIPickerViewDelegate {
-//
-//    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-//        return pickerData.count
-//    }
-//
-//    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-//        return 1
-//    }
-//
-//    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-//        return pickerData[row]
-//    }
-//
-//    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
-//        return 25
-//    }
-//}
-//
-//extension IngredientCollectionViewCell: UIPickerViewDataSource {
-//
-//}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
